@@ -1,31 +1,51 @@
 package webgo
 
 import (
-	"net/http"
-)
-
-var (
-	Request  http.Request
-	Response *http.ResponseWriter
+	"fmt"
 )
 
 type Controller struct {
-	res  *http.ResponseWriter
-	req  *http.Request
-	path string
+	ctx       *Context
+	ChildName string
 }
 
 type ControllerInterface interface {
+	Init(ct *Context, cn string)
 	Get()
 	Post()
-	Delete()
-	Put()
 	Head()
-	Render() error
+	Delete()
 }
 
-func (c *Controller) Init(req *http.Request, res *http.ResponseWriter) {
-	c.req = req
-	c.res = res
-	c.path = "/"
+func (c *Controller) Init(ctx *Context, cn string) {
+	c.ctx = ctx
+	c.ChildName = cn
+	fmt.Println("what call Init")
+}
+
+func (c *Controller) Write(content string) {
+	c.ctx.ResponseWriter.Write([]byte(content))
+}
+func (c *Controller) Prepare()    {}
+func (c *Controller) Destructor() {}
+func (c *Controller) Get() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
+}
+func (c *Controller) Post() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
+}
+func (c *Controller) Head() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
+}
+func (c *Controller) Delete() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
+}
+func (c *Controller) Put() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
+}
+func (c *Controller) Patch() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
+}
+func (c *Controller) Options() {
+	c.Write("This is Default Method. Please Create this Method to You Controller.")
 }
