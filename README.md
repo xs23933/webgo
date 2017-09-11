@@ -7,7 +7,7 @@ package main
 
 import (
 	"fmt"
-	"webgo"
+	"github.com/xs23933/webgo"
 )
 
 type MainHandler struct {
