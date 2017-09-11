@@ -1,29 +1,19 @@
 package main
 
-import "github.com/xs23933/webgo"
-import "fmt"
+import (
+	"fmt"
+	"webgo"
+)
 
 type MainHandler struct {
 	webgo.Controller
 }
 
 func (p *MainHandler) Get() {
-	fmt.Println("call MainHandler")
-	p.Write("Fuck Men")
+	fmt.Println("MainHandler.Get")
+	p.Write("Hello world!")
 }
-
-type UserHandler struct {
-	webgo.Controller
-}
-
-func (p *UserHandler) Get() {
-	fmt.Println("call UserHandler")
-	p.Write("This is User Page")
-}
-
 func main() {
 	webgo.Route("/", &MainHandler{})
-	webgo.Route("/user", &UserHandler{})
-	// webgo.Route("/user/(\d+)", &UserHandler{})
 	webgo.Run()
 }
