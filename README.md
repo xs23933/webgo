@@ -1,6 +1,12 @@
 # app
 go web framework
 
+
+#### Install
+
+```go
+go get github.com/xs23933/webgo
+```
 #### Example
 ```go
 package main
