@@ -9,6 +9,8 @@ type MainHandler struct {
 }
 
 func (p *MainHandler) Get() {
+	webgo.D(p.Ctx.Params["id"])
+	p.SetCookie("a", p.Ctx.Params["id"], "domain.com", true)
 	p.Write(`<html>
 <head>
 <link href="/css/app.css" rel="stylesheet" />
@@ -23,6 +25,10 @@ func (p *MainHandler) Get() {
 }
 func main() {
 	webgo.Route("/", &MainHandler{})
-	webgo.Route("/user/", &MainHandler{})
+	webgo.Route("/user", &MainHandler{})
+	webgo.Route("/user/:id", &MainHandler{})
+	webgo.Route("/main/:id:int", &MainHandler{})
+	webgo.Route("/info/:id(\\w+)", &MainHandler{})
+	webgo.Route("/app/:id:string", &MainHandler{})
 	webgo.Run()
 }
