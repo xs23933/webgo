@@ -10,11 +10,17 @@ type MainHandler struct {
 
 func (p *MainHandler) Get() {
 	webgo.D(p.Ctx.Params["id"])
-	p.SetCookie("a", p.Ctx.Params["id"], "domain.com", true)
+	if len(p.Cookie("id")) > 0 {
+		webgo.Error(p.Cookie("id"))
+		p.RemoveCookie("id")
+	} else {
+		p.SetCookie("id", p.Ctx.Params["id"])
+	}
 	p.Write(`<html>
 <head>
 <link href="/css/app.css" rel="stylesheet" />
 <script src='/js/app.js'></script>
+<title>hello World</title>
 </head>
 <body>
 <h1>Hello world</h1>

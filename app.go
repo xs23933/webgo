@@ -267,11 +267,37 @@ func (c *Controller) Write(content string) {
 	c.Ctx.ResponseWriter.Write([]byte(content))
 }
 
-func (c *Controller) SetCookie(name string, value string, params ...interface{}) {
+// SetCookie is add cookie with key
+//  c.SetCookie("id", "123") or c.SetCookie("id", "123", "domain.com")
+// if u need other function u can rewrite this func with u Controller
+func (c *Controller) SetCookie(key string, value string, params ...interface{}) {
 	var b bytes.Buffer
-	D(value)
-	fmt.Fprintf(&b, "%s=%s; Max-Age=2147483647; path=/", name, value)
+	fmt.Fprintf(&b, "%s=%s; Max-Age=2147483647; path=/", key, url.QueryEscape(value))
+	if len(params) > 0 {
+		fmt.Fprintf(&b, "; Domain=%s", params[0].(string))
+	}
 	c.Ctx.ResponseWriter.Header().Set("Set-Cookie", b.String())
+}
+
+// RemoveCookie is remove cookie with key
+//  c.RemoveCookie("id") or c.RemoveCookie("id", "domain.com")
+func (c *Controller) RemoveCookie(key string, params ...interface{}) {
+	var b bytes.Buffer
+	fmt.Fprintf(&b, "%s=; Max-Age=-1; path=/", key)
+	if len(params) > 0 {
+		fmt.Fprintf(&b, "; Domain=%s", params[0].(string))
+	}
+	c.Ctx.ResponseWriter.Header().Set("Set-Cookie", b.String())
+}
+
+// Cookie is get cookie with key
+// c.Cookie("id")
+func (c *Controller) Cookie(key string) string {
+	v, err := c.Ctx.Request.Cookie(key)
+	if err != nil {
+		return ""
+	}
+	return v.Value
 }
 
 func (c *Controller) Get() {
